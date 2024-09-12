@@ -1,0 +1,32 @@
+<% layout('layouts/boilerplate') %>
+    <style>
+        .card-horizontal {
+            display: flex;
+            flex: 1 1 auto;
+        }
+    </style>
+    <div class="container">
+        <h1>Participating</h1>
+        <div class="row">
+            <% for(let drive of drives){ %>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 mb-3">
+                            <div class="card">
+                                <div class="card-horizontal">
+                                    <div class="col-md-4">
+                                        <img class="img-fluid" src=<%= drive.drive_image? drive.drive_image: "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png" %>  alt="Card image cap">
+                                    </div>
+                                    <div class="card-body">
+                                        <h4 class="card-title"><%= drive.drive_name %> </h4>
+                                        <p class="card-text"><%= drive.drive_description %> </p>
+                                        <a href="/drives/<%= drive.drive_id %>" class="btn btn-success">View Drive</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } %> 
+        </div>
+    </div>

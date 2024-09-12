@@ -1,0 +1,132 @@
+<% layout('layouts/boilerplate') %>
+    <section style="background-color: rgb(251, 249, 249);">
+
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <img src=<%= (data.person.user_image? data.person.user_image : "https://cdn-icons-png.flaticon.com/512/3135/3135715.png") %>  
+                                alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                            <h5 class="my-3 fs-3">
+                                <%= data.person.user_first_name%> <%= data.person.user_middle_name %> <%= data.person.user_last_name %> 
+                                <% if(data.person.verify=='V') {%>
+                                    <img src=" https://t3.ftcdn.net/jpg/04/06/15/40/360_F_406154090_rkriySX3dV4KkKwVq0ZLf3Igr956JvU1.jpg" 
+                                    alt="avatar" class="rounded-circle img-fluid" style="width: 40px; height: 37;">
+                                <% } %>
+                                <% if(!data.person.verify) {%>
+                                    <img src=" https://p.kindpng.com/picc/s/343-3432470_circle-hd-png-download.png"
+                                    alt="avatar" class="rounded-circle img-fluid" style="width: 40px; height: 37;">
+                                <% } %>
+                            </h5>
+                            <p class="text-muted mb-4"><%= data.person.user_city %>,  <%= data.person.user_state %> </p>
+                            <% if(!data.person.verify &&  userLoggedIn.username == data.person.user_name ) {%>
+                                <div class="row mb-3">
+                                    <a href="/OTPtestuser/<%= data.person.user_name%>" class="btn btn-md btn-warning fw-bold bg-white col-md-6">Get OTP</a>
+                                    <div class="btn-group dropend ps-2 col-md-6">
+                                        <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                            &nbsp;  verify mail
+                                        </button>
+                                        <form action="/verifyuser/<%= data.person.user_name%>" method="post" class="dropdown-menu p-4">
+                                            <div class="mb-3">
+                                                <label for="Report" class="form-label"> Enter OTP</label>
+                                                <input type="text" class="form-control" name="OTP" id="OTP" placeholder="Enter OTP" required>
+                                            </div>
+                                            <div class="text-right">
+                                                <button type="submit" class="btn btn-success float-end">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <% } %>
+                                <a type="button" href="/person/<%= data.person.user_name %>/participating" class="btn btn-success col-md-6 me-3">Participanting</a>
+                        </div>
+                    </div>
+                    <div class="card mb-4 mb-lg-0">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Email</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0"><%= data.person.user_mail %></p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Phone</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0"><%= data.person.user_contact %> </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Gender</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0"><%= data.person.user_gender %> </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Age</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0"><%= data.person.user_age %> </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="mb-0">Address</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <p class="text-muted mb-0"><%= data.person.user_address %> <%= data.person.user_city %> <%= data.person.user_state %>, <%= data.person.user_zip_code %> </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <h2 class="my-3">Drives Attended</h2>
+                    <div class="row ">
+                        <% let i=0 %>
+                            <% for( let drive of data.drives ) { %>
+                                <div class="col-md-3">
+                                    <% if (i%2==0) { %>
+                                        <div class="card text-white bg-success mb-4 mb-md-4">
+                                            <div class="card-body text-center">
+                                                <img src=<%=drive.drive_image? drive.drive_image: "https://images.unsplash.com/photo-1535090042247-30387644aec5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8bmdvfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"%>
+                                                alt="avatar" class="rounded-circle img-fluid" style="width: 105px;">
+                                                <h5 class="my-3"><%= drive.drive_name %></h5>
+                                                <p class="text-white mb-1"><%= drive.drive_date.toString().substring(0,15) %></p>
+                                                <p class="text-white mb-1"><%= drive.drive_time%></p>
+                                                <p class="text-white mb-1"><%= drive.drive_type%></p>
+                                                <a class="stretched-link" href="/drives/<%= drive.drive_id %>"></a>
+                                            </div>
+                                        </div>
+                                    <% } else { %>
+                                        <div class="card mb-4 mb-md-4">
+                                            <div class="card-body text-center">
+                                                <img src=<%=drive.drive_image? drive.drive_image: "https://images.unsplash.com/photo-1535090042247-30387644aec5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8bmdvfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"%>
+                                                alt="avatar" class="rounded-circle img-fluid" style="width: 105px;">
+                                                <h5 class="my-3"> <%= drive.drive_name %> </h5>
+                                                <p class="mb-1"><%= drive.drive_date.toString().substring(0,15) %></p>
+                                                <p class="mb-1"><%= drive.drive_time%></p>
+                                                <p class="mb-1"><%= drive.drive_type%></p>
+                                                <a class="stretched-link" href="/drives/<%= drive.drive_id %>"></a>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            <% i++; %>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>

@@ -1,0 +1,40 @@
+<% layout('layouts/boilerplate') %>
+    <style>
+        .card-horizontal {
+            display: flex;
+            flex: 1 1 auto;
+        }
+    </style>
+    <div class="container">
+        <h1>Participants</h1>
+        <div class="row">
+            <% for(let p of persons){ %>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 mb-2">
+                            <div class="card" style="width: 50rem;">
+                                <div class="card-horizontal">
+                                    <div class="col-md-3">
+                                        <img class="img-fluid" src=<%= p.user_image? p.user_image: "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png" %>  alt="Card image cap">
+                                    </div>
+                                     <div class="card-body">
+                                        <h4 class="card-title"><%= p.user_name %> </h4>
+                                        <!-- <h6 class="card-subtitle mb-2 text-muted"><%= p.ngo_organization %></h6> -->
+                                        <div class="card-horizontal">
+                                        
+                                        <h6 class="card-subtitle mb-2 "><%= p.user_address %></h6>
+                                        <h6 class="card-subtitle mb-2 "> ,   <%= p.user_city %></h6>
+                                        <h6 class="card-subtitle mb-2 "> ,   <%= p.user_state %></h6>
+
+                                    </div>   
+                                    <a href="/person/<%= p.user_name %>" class="btn btn-success">View Profile</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } %> 
+        </div>
+    </div>

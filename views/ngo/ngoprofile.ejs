@@ -1,0 +1,253 @@
+<% layout('layouts/boilerplate') %>
+    <style>
+        .dropdown-menu {
+            width: 400px !important;
+            height: 200px !important;
+        }
+    </style>
+    <section style="background-color: rgb(251, 249, 249);">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card mb-4">
+                        <div class="card-body text-center">
+                            <img src=<%=data.ngo.ngo_image? data.ngo.ngo_image : "https://images.unsplash.com/photo-1535090042247-30387644aec5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8bmdvfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"%>
+                                alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+
+                            <div class="d-flex justify-content-center">
+                                <h5 class="my-2 fs-3">
+                                    <%= data.ngo.ngo_name %>
+                                    <% if(data.ngo.verify=='V' ) {%>
+                                        <img src=" https://t3.ftcdn.net/jpg/04/06/15/40/360_F_406154090_rkriySX3dV4KkKwVq0ZLf3Igr956JvU1.jpg"
+                                            alt="avatar" class="rounded-circle img-fluid" style="width: 40px; height: 37px;" >
+                                    <% } %>
+                                    <% if(!data.ngo.verify) {%>
+                                        <img src=" https://p.kindpng.com/picc/s/343-3432470_circle-hd-png-download.png"
+                                            alt="avatar" class="rounded-circle img-fluid" style="width: 40px; height: 37px;">
+                                    <% } %>
+                                </h5>
+                            </div>
+                            <p class="text-muted mb-4">
+                                <%= data.ngo.ngo_city %>, <%= data.ngo.ngo_state %>
+                            </p>
+                            <% if(userLoggedIn && userLoggedIn.type=='A' ) { %>
+                                <div>
+                                    <form class="col-md-12" action="/ngo/<%= data.ngo.ngo_username%>?_method=DELETE" method="post">
+                                        <button class="btn btn-outline-danger col-md-6">Delete</button>
+                                    </form>
+                                </div>
+                            <% } %>
+                            <% if (userLoggedIn && userLoggedIn.type=='P' ) { %>
+                                <div class="row">
+                                    <div class="d-flex justify-content-center mb-2">
+                                        <a href="/member/<%= data.ngo.ngo_username%>" class="btn btn-success col-md-6">Connect</a>
+                                        <div class="btn-group dropend ps-2 col-md-6">
+                                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Donate
+                                            </button>
+                                            <form action="/donate/<%= data.ngo.ngo_username%>" method="post" class="dropdown-menu p-4">
+                                                <div class="mb-3">
+                                                    <label for="amount" class="form-label">Amount</label>
+                                                    <input type="integer" class="form-control" name="amount" id="amount" placeholder="Amount in Rupees" required>
+                                                </div>
+                                                <div class="text-right">
+                                                    <button type="submit" class="btn btn-secondary float-end">Confirm</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="d-flex justify-content-center mb-2">
+                                        <div class="btn-group dropend col-md-6">
+                                            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Feedback
+                                            </button>
+                                            <form action="/feedback/<%= data.ngo.ngo_username%>" method="post" class="dropdown-menu p-4">
+                                                <div class="mb-3">
+                                                    <label for="feedback" class="form-label">Give Feedback</label>
+                                                    <input type="text" class="form-control" name="feedback" id="feedback" placeholder="Feedback in words" required>
+                                                </div>
+                                                <div class="text-right">
+                                                    <button type="submit" class="btn btn-primary float-end">Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="btn-group dropend ps-2 col-md-6">
+                                            <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Report <sup><%= data.reports.length %></sup>
+                                            </button>
+                                            <form action="/report/<%= data.ngo.ngo_username%>" method="post" class="dropdown-menu p-4">
+                                                <div class="mb-3">
+                                                    <label for="Report" class="form-label">Reason for Reporting NGO</label>
+                                                    <input type="text" class="form-control" name="Report" id="Report" placeholder="Description" required>
+                                                </div>
+                                                <div class="text-right">
+                                                    <button type="submit" class="btn btn-danger float-end">Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+                            <% if (userLoggedIn && userLoggedIn.type=='N' && userLoggedIn.username==data.ngo.ngo_username ) { %>
+                                <div class="row">
+                                    <% if(!data.ngo.verify) {%>
+                                        <div class="d-flex justify-content-center mb-2">
+                                            <a href="/OTPtest/<%= data.ngo.ngo_username%>" class="btn btn-warning fw-bold bg-white col-md-6">Get OTP</a>
+                                            <div class="btn-group dropend ps-2 col-md-6">
+                                                <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    &nbsp; verify mail
+                                                </button>
+                                                <form action="/verify/<%= data.ngo.ngo_username%>" method="post" class="dropdown-menu p-4">
+                                                    <div class="mb-3">
+                                                        <label for="Report" class="form-label"> Enter OTP</label>
+                                                        <input type="text" class="form-control" name="OTP" id="OTP" placeholder="Enter OTP" required>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <button type="submit" class="btn btn-success float-end">Submit</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                </div>
+                                <a href="/viewmembers/<%= data.ngo.ngo_username%>" class="btn btn-success col-md-6">View Members</a>
+                        <% } %>
+                        </div>
+
+                        <div class="card mb-4 mb-lg-0 ">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Email</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0"> <%= data.ngo.ngo_mail %> </p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Phone</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0"> <%= data.ngo.ngo_contact %> </p>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p class="mb-0">Address</p>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p class="text-muted mb-0">
+                                            <%= data.ngo.ngo_address %> <%= data.ngo.ngo_city %> <%= data.ngo.ngo_state %>, <%= data.ngo.ngo_zip_code %>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <h2 class="my-2">Drives Conducted</h2>
+
+                    <div class="row ">
+                        <% let i=0 %>
+                            <% for( let drive of data.drives ) { %>
+                                <div class="col-md-3">
+                                    <% if (i%2==0) { %>
+                                        <div class="card text-white bg-success mb-4 mb-md-4">
+                                            <div class="card-body text-center">
+                                                <img src=<%=drive.drive_image?
+                                                    drive.drive_image: "https://images.unsplash.com/photo-1535090042247-30387644aec5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8bmdvfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
+                                                    %>
+                                                alt="avatar" class="rounded-circle img-fluid" style="width: 105px;">
+                                                <h5 class="my-3"> <%= drive.drive_name %></h5>
+                                                <p class="text-white mb-1"><%= drive.drive_date.toString().substring(0,15) %></p>
+                                                <p class="text-white mb-1"><%= drive.drive_time%></p>
+                                                <p class="text-white mb-1"><%= drive.drive_type%></p>
+                                                <a class="stretched-link" href="/drives/<%= drive.drive_id %>"></a>
+                                            </div>
+                                        </div>
+                                    <% } else { %>
+                                        <div class="card mb-4 mb-md-4">
+                                            <div class="card-body text-center">
+                                                <img src=<%=drive.drive_image? drive.drive_image:"https://images.unsplash.com/photo-1535090042247-30387644aec5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8bmdvfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60" %>
+                                                    alt="avatar" class="rounded-circle img-fluid" style="width: 105px;">
+                                                <h5 class="my-3"><%= drive.drive_name %></h5>
+                                                <p class="mb-1"><%= drive.drive_date.toString().substring(0,15) %></p>
+                                                <p class="mb-1"><%= drive.drive_time%></p>
+                                                <p class="mb-1"><%= drive.drive_type%></p>
+                                                <a class="stretched-link" href="/drives/<%= drive.drive_id %>"></a>
+                                            </div>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            <% i++; %>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+            <% if (userLoggedIn && userLoggedIn.type=='A') { %>
+                <h2 class="fs-2 fw-bold my-3 p-1">Total number of reports are: <%= data.reports.length %> </h2>
+                <div class="container">
+                    <div class="row my-2">
+                        <h2 class="fs-2 p-1 col-md-3">Reported By:</h2>
+                        <h2 class="fs-2 p-1 col-md-9">Description:</h2>
+                    </div>
+                </div>
+                <% for(let report of data.reports){ %>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="card">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="card-body">
+                                            <h4 class="card-title"><%= report.user_name %> </h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="card-body">
+                                            <p class="card-text"><%= report.description %> </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %> 
+            <% } %>
+
+            <% if (userLoggedIn && userLoggedIn.type=='N' && userLoggedIn.username==data.ngo.ngo_username) { %>
+                <div class="container">
+                    <div class="row my-2">
+                        <h2 class="fs-2 p-1 col-md-3">Feedback By:</h2>
+                        <h2 class="fs-2 p-1 col-md-9">Description:</h2>
+                    </div>
+                </div>
+                <% for(let feedback of data.feedbacks){ %>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="card">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="card-body">
+                                            <h4 class="card-title"><%= feedback.user_name %></h4>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="card-body">
+                                            <p class="card-text"><%= feedback.feedback %> </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %> 
+            <% } %>
+        </div>
+    </section>

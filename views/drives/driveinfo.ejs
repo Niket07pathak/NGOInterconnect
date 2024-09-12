@@ -1,0 +1,99 @@
+<% layout('layouts/boilerplate') %>
+
+    <section style="background-color: rgb(253, 253, 253);">
+        <div class="conatiner mb-3">
+            <div class="row align-items-center">
+                <div class="col-7 mx-auto">
+                    <div class="card">
+                        <img src=<%= drive.drive_image? drive.drive_image: "https://upload.wikimedia.org/wikipedia/commons/b/b6/Image_created_with_a_mobile_phone.png" %>
+                            class="card-img-top img-fluid" alt="...">
+                        <div class="card-body">
+                            <h3 class="card-title">
+                                <p class="text-center">
+                                    <%= drive.drive_name %>
+                                </p>
+                            </h3>
+                            <p class="card-text">
+                                <%= drive.drive_description %>
+                            </p>
+                        </div>
+                        <div class="card-body">
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <h5 class="mb-0">Drive Type</h5>
+                                </div>
+                                <div class="col-sm-8">
+                                    <p class="text-muted mb-0"><%= drive.drive_type %>  </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <h5 class="mb-0">Venue</h5>
+                                </div>
+                                <div class="col-sm-8">
+                                    <p class="text-muted mb-0">
+                                        <%= drive.drive_location %>
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <h5 class="mb-0">Date</h5>
+                                </div>
+                                <div class="col-sm-8">
+                                    <p class="text-muted mb-0">
+                                        <%= drive.drive_date.toString().substring(0,15) %> 
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <h5 class="mb-0">Time</h5>
+                                </div>
+                                <div class="col-sm-8">
+                                    <p class="text-muted mb-0">
+                                        <%= drive.drive_time %> 
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <h5 class="mb-0">Manager</h5>
+                                </div>
+                                <div class="col-sm-8">
+                                    <p class="text-muted mb-0">
+                                        <%= drive.drive_manager %> 
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-center mb-2">
+                                <% if (userLoggedIn) { %>
+                                    <% if (userLoggedIn.username == drive.ngo_username) { %>
+                                        <a type="button" href="/drives/<%= drive.drive_id %>/edit" class="btn btn-outline-danger col-md-6 me-3"> Edit </a>
+                                        <a type="button" href="/drives/<%= drive.drive_id %>/viewpaticipants" class="btn btn-outline-danger col-md-6 me-3"> View Participants </a>
+                                        <% } %>
+                                    <% if (userLoggedIn.type=='P') { %>
+                                        <a type="button" href="/connect/<%= drive.drive_id %>" class="btn btn-success col-md-6">Register</a>
+                                        <% } %>
+                                    <% if (userLoggedIn.type=='A') { %>
+                                        <form class="col-md-12" action="/drives/<%= drive.drive_id %>?_method=DELETE" method="post">
+                                            <button class="btn btn-outline-danger col-md-6 offset-md-3">Delete </button>
+                                        </form>
+                                    <% } %>
+                                <% } else { %>
+                                    <a type="button" href="/login" class="btn btn-success col-md-6">Login</a>
+                                <% } %> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>

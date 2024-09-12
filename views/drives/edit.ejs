@@ -1,0 +1,82 @@
+<% layout('layouts/boilerplate') %>
+    <div class="row">
+        <h1 class="text-center">Edit Drive</h1>
+        <div class="col-md-6 offset-md-3">
+            <form action="/drives/<%= drive.drive_id %>?_method=PUT" method="post">
+                <div class="row" >
+                    <div class="col-md-8">
+                        <label class="form-label" for="title">Title</label>
+                        <input class="form-control" type="text" id="title" placeholder="Enter Name" name="title" 
+                            required value="<%= drive.drive_name %>" >
+                    </div>
+                    <div class="dropdown mb-3 col-md-4">
+                        <label class="form-label" for="driveTyprDropDown">Drive Type</label>
+                        <select class="form-select" id="driveTyprDropDown" name="driveType" required>
+                            <option >Choose...</option>
+                            <% if (drive.drive_type=='Health') { %>
+                                <option value="Health" selected >Health</option>
+                                <option value="Education">Education</option>
+                                <option value="Nature">Nature</option>
+                                <option value="Other">Other</option> 
+                            <% } else if (drive.drive_type=='Education') { %>
+                                <option value="Health" >Health</option>
+                                <option value="Education" selected >Education</option>
+                                <option value="Nature" >Nature</option>
+                                <option value="Other" >Other</option> 
+                            <% } else if (drive.drive_type=='Nature') { %>
+                                <option value="Health" >Health</option>
+                                <option value="Education" >Education</option>
+                                <option value="Nature" selected >Nature</option>
+                                <option value="Other" >Other</option> 
+                            <% } else {%>
+                                <option value="Health" >Health</option>
+                                <option value="Education" >Education</option>
+                                <option value="Nature" >Nature</option>
+                                <option value="Other" selected >Other</option> 
+                            <% } %> 
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="location">Venue</label>
+                    <input class="form-control" type="text" id="location" placeholder="Enter venue" name="driveVenue"
+                        required value="<%= drive.drive_location %>" >
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="image">Image</label>
+                    <input class="form-control" type="text" id="image" placeholder="Enter Image URL" name="driveImage"
+                        value="<%= drive.drive_image %>" >
+                </div>
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label" for="date">Date</label>
+                        <input class="form-control" type="date" id="date" placeholder="Enter Date"
+                            name="driveDate" value=<%= drive.drive_date %>  required>
+                    </div>
+
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label" for="time">Time</label>
+                        <input class="form-control" type="time" id="time" placeholder="Enter time" name="driveTime"
+                            value="<%= drive.drive_time %>" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="manager">Drive Manager</label>
+                    <input class="form-control" type="text" id="manager" placeholder="Enter Name" name="driveManager"
+                        value="<%= drive.drive_manager %>" required>
+                </div>
+
+
+                <div class="mb-3">
+                    <label class="form-label" for="description">Description</label>
+                    <textarea class="form-control" type="text" id="description" placeholder="Enter description"
+                        name="driveDescription" required><%= drive.drive_description%></textarea>
+                </div>
+              
+                <div class="mb-3 d-grid">
+                    <button class="btn btn-success">Edit Drive</button>
+                </div>
+            </form>
+            <a href="/drives/<%= drive.drive_id %>">Back to Drive</a>
+        </div>
+    </div>
